@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import {View, Text, TouchableOpacity} from 'react-native'
 import { getMetricMetaInfo, timeToString } from '../utils/helpers'
-import UdaciSlider from './UdaciSlide';
+import UdaciSlide from './UdaciSlide';
 import UdaciSteper from './UdaciSteper';
 import DateHeader from './DateHeader';
+import TextButton from './TextButton'
+import {Ionicons} from '@expo/vector-icons'
+
 
 function SubmitBtn({action}) {
     return(
@@ -19,7 +22,7 @@ export default class AddEntry extends Component{
     state = {
         run: 0,
         bike: 0,
-        swim: 5,
+        swim: 0,
         sleep: 0,
         eat: 0,
     }
@@ -64,11 +67,27 @@ export default class AddEntry extends Component{
         //Save to 'DB'
         //Clear local notification
     }
+    reset = () => {
+        const key = timeToString()
+        //Navigate to home
+        //Save to 'DB'
+        //Clear local notification
+    }
     render() {
-        const metaInfo = getMetricMetaInfo()
+        const metaInfo = getMetricMetaInfo()  
+        if (this.props.alreadyLogged) {
+            return(
+                <View>
+                    <Ionicons name='ios-happy-outline' size={70} color={'black'}/>
+                    <Text>You are already logged information for today</Text>
+                    <TextButton onPress={this.reset}> 
+                        Reset
+                    </TextButton>
+                </View>
+            )
+        }                             
         return(
             <View>
-                <Text>{JSON.stringify(this.state)}</Text>
                 <DateHeader date={(new Date()).toLocaleDateString()}/>
                {Object.keys(metaInfo).map((key) => {
                    const { getIcon, type, ...rest} = metaInfo[key]
@@ -77,15 +96,15 @@ export default class AddEntry extends Component{
                        <View key={key}>
                         {getIcon()}
                         {type === 'slider'
-                            ? <UdaciSlider
+                            ? <UdaciSlide
                                 value={value}
-                                onChange={() => this.slide(key, value)}
+                                onChange={(value) => this.slide(key, value)}
                                 {...rest}
                                 />  
                             : <UdaciSteper
                                 value={value}
-                                onIncrement={() => this.increment()}
-                                onDecrement={() => this.decrement()}
+                                onIncrement={() => this.increment(key)}
+                                onDecrement={() => this.decrement(key)}
                                 {...rest}
                                 />
                         }
