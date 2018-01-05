@@ -6,7 +6,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View>
-        <AddEntry/>
+        <AddEntry />
       </View>
     )
   }
