@@ -1,15 +1,25 @@
 import React, { Component } from 'react'
-import {View} from 'react-native'
-import { getMetricMetaInfo } from '../utils/helpers'
+import {View, Text, TouchableOpacity} from 'react-native'
+import { getMetricMetaInfo, timeToString } from '../utils/helpers'
 import UdaciSlider from './UdaciSlide';
 import UdaciSteper from './UdaciSteper';
 import DateHeader from './DateHeader';
+
+function SubmitBtn({action}) {
+    return(
+        <TouchableOpacity
+            onPress={action}
+        >
+            <Text> Submit</Text>
+        </TouchableOpacity>
+    )
+}
 
 export default class AddEntry extends Component{
     state = {
         run: 0,
         bike: 0,
-        swim: 0,
+        swim: 5,
         sleep: 0,
         eat: 0,
     }
@@ -38,10 +48,27 @@ export default class AddEntry extends Component{
             [metric]: value,
         }))
     }
+    submit = () => {
+        const key = timeToString()
+        const entry = this.state
+
+        //update Redux
+        this.setState(() => ({
+            run: 0,
+            bike: 0,
+            swim: 0,
+            sleep: 0,
+            eat: 0
+        }))
+        //Navigate to home
+        //Save to 'DB'
+        //Clear local notification
+    }
     render() {
         const metaInfo = getMetricMetaInfo()
         return(
             <View>
+                <Text>{JSON.stringify(this.state)}</Text>
                 <DateHeader date={(new Date()).toLocaleDateString()}/>
                {Object.keys(metaInfo).map((key) => {
                    const { getIcon, type, ...rest} = metaInfo[key]
@@ -64,9 +91,9 @@ export default class AddEntry extends Component{
                         }
                        </View> 
                     )
-               })
-                    
+               })   
                }
+               <SubmitBtn action={this.submit}/>
             </View>
         )
     }
