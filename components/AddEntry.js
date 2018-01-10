@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {View, Text, TouchableOpacity} from 'react-native'
 import { getMetricMetaInfo, timeToString } from '../utils/helpers'
+import { submitEntry, removeEntry } from '../utils/api'
 import UdaciSlide from './UdaciSlide';
 import UdaciSteper from './UdaciSteper';
 import DateHeader from './DateHeader';
@@ -65,12 +66,14 @@ export default class AddEntry extends Component{
         }))
         //Navigate to home
         //Save to 'DB'
+        submitEntry({key, entry})
         //Clear local notification
     }
     reset = () => {
         const key = timeToString()
         //Navigate to home
         //Save to 'DB'
+        removeEntry(key)
         //Clear local notification
     }
     render() {
