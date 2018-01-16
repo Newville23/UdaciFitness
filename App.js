@@ -9,9 +9,9 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={createStore(reducer)}>
-        <ScrollView>
+        <View style={{flex: 1}}>
           <AddEntry />
-        </ScrollView>
+        </View>
       </Provider>
     )
   }
