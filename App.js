@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import AddEntry from './components/AddEntry'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
@@ -9,9 +9,9 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={createStore(reducer)}>
-        <View style={{flex: 1}}>
+        <ScrollView style={{flex: 1}}>
           <AddEntry />
-        </View>
+        </ScrollView>
       </Provider>
     )
   }
